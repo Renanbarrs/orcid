@@ -1,4 +1,3 @@
-```markdown
 # ORCID Data Extractor
 
 Este projeto contém dois scripts Python para buscar e exibir informações públicas de pesquisadores na plataforma ORCID, utilizando a API pública do ORCID.
