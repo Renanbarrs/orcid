@@ -13,30 +13,7 @@ pip install requests
 
 ## Como usar
 
-### 1. Pesquisa por ID ORCID (Para teste e validação do programa)
-O script `api_orcid_id.py` permite buscar informações detalhadas de um pesquisador a partir do **ID ORCID**.
-
-**Como executar:**
-```bash
-python api_orcid_id.py
-```
-Você será solicitado a digitar o ID ORCID (exemplo: `0000-0002-1825-0097`).
-O script irá exibir:
-
-- Nome completo
-- E-mails (se públicos)
-- Biografia (se pública)
-- Palavras-chave
-- Outros nomes
-- País
-- URLs de pesquisa
-- Empregos (afiliações profissionais)
-- Educação (afiliações acadêmicas)
-- Produções científicas (título, ano, tipo, DOI, etc)
-
----
-
-### 2. Pesquisa por Nome
+### 1. Pesquisa por Nome
 
 O script `api_orcid_nome.py` permite buscar informações a partir do **nome e sobrenome** do pesquisador.
 
@@ -52,7 +29,23 @@ O objeto retornado segue o modelo:
 - Os campos preenchidos são: nome, email (se público), titulação e ano de conclusão (se disponíveis na educação), e produções científicas.
 
 ---
+## Endpoints da API ORCID utilizados
 
+- **Buscar pessoa por nome:**  
+  `GET https://pub.orcid.org/v3.0/search/?q=family-name:{sobrenome}+AND+given-names:{nome}`
+
+- **Buscar dados pessoais:**  
+  `GET https://pub.orcid.org/v3.0/{orcid_id}/person`
+
+- **Buscar produções científicas:**  
+  `GET https://pub.orcid.org/v3.0/{orcid_id}/works`
+
+- **Buscar afiliações (educação):**  
+  `GET https://pub.orcid.org/v3.0/{orcid_id}/educations`
+
+- **Buscar afiliações (empregos):**  
+  `GET https://pub.orcid.org/v3.0/{orcid_id}/employments`
+  
 ## Observações
 - Os scripts retornam apenas informações públicas disponíveis na API do ORCID.
 - Alguns campos podem aparecer como "Não disponível" ou `None` caso o pesquisador não tenha tornado a informação pública.
@@ -66,6 +59,40 @@ O objeto retornado segue o modelo:
 - `api_orcid_nome.py`: Busca por nome e sobrenome e retorna o objeto no modelo do banco de dados.
 
 ---
+
+## Sobre chave de API
+
+> **Atenção:**  
+> Esta aplicação utiliza apenas a **API pública do ORCID**, que não exige chave de API, token ou autenticação para acesso aos dados públicos.  
+> Caso seja necessário acessar dados privados no futuro, será preciso registrar a aplicação no ORCID e obter credenciais específicas.
+
+---
+
+## Conteinerização com Docker
+
+A aplicação pode ser executada em qualquer ambiente que tenha Docker instalado, sem necessidade de instalar Python ou dependências manualmente.
+
+### Como gerar e rodar a imagem Docker:
+
+1. **Build da imagem:**
+   ```sh
+   docker build -t orcid-app .
+
+## Executando diretamente pelo Docker Hub
+
+Se preferir, você pode rodar a aplicação sem baixar os arquivos do projeto, utilizando a imagem publicada no Docker Hub:
+
+1. **Baixe a imagem:**
+   ```sh
+   docker pull rajastx/orcid-app
+   ```
+
+2. **Execute o container:**
+   ```sh
+   docker run -it rajastx/orcid-app
+   ```
+
+> O parâmetro `-it` permite interação com o terminal para digitar nome e sobrenome.
 
 ## Link de pesquisa da ORCID
 https://orcid.org/orcid-search/search
